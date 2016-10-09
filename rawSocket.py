@@ -7,7 +7,7 @@ def Main ( ):
     puerto = 9709
 
     # Socket tipo TCP/IP.
-    crearSocket = socket.socket ( socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_IP )
+    crearSocket = socket.socket ( socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_IP ) # Revisar IPPROTO_IP ya que a mi me marca error.
 
     try:
         # Asociamos el socket a una direccion y puerto de servidor.

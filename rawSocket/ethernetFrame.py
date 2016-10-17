@@ -16,4 +16,4 @@ def getMacAddress ( bytesAddress ):
     stringBytes = map ( '{:02x}'.format, bytesAddress )
     # Joins all the bytes together with ":" between all of then and makes an upper case.
     # Example: AA:BB:CC:DD:EE:FF:GG...
-    return ':'.join( bytesAddress ).upper ( )
+    return ':'.join( stringBytes ).upper ( )

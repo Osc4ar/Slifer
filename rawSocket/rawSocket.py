@@ -10,7 +10,7 @@ def rawSocket ( ):
 
     # Family, type, and protocol: The last parameter makes the socket compatable with all machines,
     # big endian or little endian it's correct for read, etc...
-    RawSocket = socket.socket ( socket.AF_INET, socket.SOCK_RAW, socket.ntohs ( 3 ) );
+    RawSocket = socket.socket ( socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs ( 3 ) );
 
     # Main loop, listen for any data that comes across.
     while True:
@@ -20,11 +20,11 @@ def rawSocket ( ):
 
         destinationMAC, sourceMAC, ethernetProtocol, data = ethernetFrame ( rawData )
 
-        print ('\nEthernet frame: ')
-        print ('Destination: {}, source: {}, protocol: {}'.format ( destinationMAC, sourceMAC, ethernetProtocol ) )
+        print ( '\nEthernet frame: ' )
+        print ( 'Destination: {}, source: {}, Protocol: {}'.format ( destinationMAC, sourceMAC, ethernetProtocol ) )
 
         # 8 for IPv4 ( regular internet trafic ).
-        if protocol == 8:
+        if ethernetProtocol == 8:
             ( version, headerLength, TTL, protocol, source, target, data ) = IPHeader ( data )
             print ( 'IPv4 packet:' )
             print ( 'Version: {}, Header Length: {}, TTL: {}'.format ( version, headerLength, TTL ) )
@@ -35,7 +35,7 @@ def rawSocket ( ):
                 ( typeICMP, code, checksum, data ) = packetICMP ( data )
                 print ( 'ICMP Packet: {}, Code: {}, Checksum: {}'.format ( typeICMP, code, checksum ) )
                 print ( 'Data:' )
-                print ( formatMulti_Line ( DATAFORMAT_3, data ) )
+                print ( format_multi_line ( DATAFORMAT_3, data ) )
 
             # TCP packet inside protocol.
             elif protocol == 6:
@@ -46,7 +46,7 @@ def rawSocket ( ):
                 print ( 'Flags:' )
                 print ( 'URG: {}, ACK: {}, PSH: {}, RST: {}, SYN: {}, FIN: {}'.format ( flagsURG, flagsACK, flagsPSH, flagsRST, flagsSYN, flagsFIN ) )
                 print ( 'Data:' )
-                print ( formatMulti_Line ( DATAFORMAT_3, data ) )
+                print ( format_multi_line ( DATAFORMAT_3, data ) )
 
             # UDP packet inside.
             elif protocol == 17:
@@ -57,8 +57,8 @@ def rawSocket ( ):
             # Other.
             else:
                 print ( 'Data:' )
-                print ( formatMulti_Line ( DATAFORMAT_2, data ) )
+                print ( format_multi_line ( DATAFORMAT_2, data ) )
 
         else:
             print ( 'Data:' )
-            print ( formatMulti_Line ( DATAFORMAT_1, data ) )
+            print ( format_multi_line ( DATAFORMAT_1, data ) )
